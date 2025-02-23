@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 
 
-def generate_data(dir='data/archive/dataset', input_shape=(224, 224)):
+def generate_data(dir='archive/dataset', input_shape=(224, 224)):
 
     def load_dataset(dir, data_num):
         cat_images = glob(osp.join(dir, 'cats', '*.jpg'))
@@ -86,7 +86,7 @@ def train(train_X, train_Y, step=1000, learning_rate=0.00001):
     return w, b
 
 
-def test(w, b, test_X, test_Y):
+def run_test(w, b, test_X, test_Y):
     y_hat = predict(w, b, test_X)
     predicts = np.where(y_hat > 0.5, 1, 0)
     score = np.mean(np.where(predicts == test_Y, 1, 0))
@@ -94,7 +94,7 @@ def test(w, b, test_X, test_Y):
 
 
 def main():
-    train_X, train_Y, test_X, test_Y = generate_data()
+    train_X, train_Y, test_X, test_Y = generate_data(dir='../../data/archive/dataset')
 
     train_X = [resize_input(x) for x in train_X]
     test_X = [resize_input(x) for x in test_X]
@@ -109,7 +109,7 @@ def main():
 
     w, b = train(train_X, train_Y, learning_rate=0.0002)
 
-    test(w, b, test_X, test_Y)
+    run_test(w, b, test_X, test_Y)
 
 
 if __name__ == '__main__':
